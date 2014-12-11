@@ -124,7 +124,7 @@ namespace TestApplication
                                 break;
                             case "height":
                                 int height = 0;
-                                w.Width = int.TryParse(prop.Value, out height) ? height : 0;
+                                w.Height = int.TryParse(prop.Value, out height) ? height : 0;
                                 break;
                         }
                         if (prop.Name == "Title")
@@ -195,8 +195,12 @@ namespace TestApplication
             Window window = InflateLayout(
             @"Window {
                 Title = Hello;
-                Width = 100;
+                Width = 400;
                 Height = 100;
+
+                Button { 
+                    Content = Hi;
+                }
               }");
             DevTools.Attach(window);
 
