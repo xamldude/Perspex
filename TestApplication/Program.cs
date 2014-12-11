@@ -6,12 +6,17 @@ using Perspex.Diagnostics;
 using Perspex.Layout;
 using Perspex.Media;
 using Perspex.Media.Imaging;
+using Perspex.Markup;
+
 #if PERSPEX_GTK
 using Perspex.Gtk;
 #else
 using Perspex.Win32;
 #endif
 using Splat;
+using System;
+using System.Linq;
+using Perspex.Dom;
 
 namespace TestApplication
 {
@@ -94,6 +99,46 @@ namespace TestApplication
             new Item { Name = "Item 3", Value = "Item 3 Value" },
         };
 
+        static Window InflateLayout(string markup)
+        {
+            var doc = MarkupParser.ParseMarkup(markup);
+
+            if (doc.RootNode?.Name == "Window")
+            {
+                Window w = new Window();
+
+                foreach (var c in doc.RootNode.Children)
+                {
+                    if (c is Property)
+                    {
+                        var prop = (Property)c;
+
+                        switch (prop.Name.ToLower())
+                        {
+                            case "title":
+                                w.Title = prop.Value;
+                                break;
+                            case "width":
+                                int width = 0;
+                                w.Width = int.TryParse(prop.Value, out width) ? width : 0;
+                                break;
+                            case "height":
+                                int height = 0;
+                                w.Width = int.TryParse(prop.Value, out height) ? height : 0;
+                                break;
+                        }
+                        if (prop.Name == "Title")
+                            w.Title = prop.Value;
+                    }
+                }
+
+                return w;
+            } else
+            {
+                throw new InvalidOperationException("Window must be the root node!");
+            }
+        }
+
         static void Main(string[] args)
         {
             //LogManager.Enable(new TestLogger());
@@ -110,6 +155,7 @@ namespace TestApplication
                 },
             };
 
+            /*
             Window window = new Window
             {
                 Title = "Perspex Test Application",
@@ -144,7 +190,14 @@ namespace TestApplication
                     }
                 },
             };
+            */
 
+            Window window = InflateLayout(
+            @"Window {
+                Title = Hello;
+                Width = 100;
+                Height = 100;
+              }");
             DevTools.Attach(window);
 
             window.Show();

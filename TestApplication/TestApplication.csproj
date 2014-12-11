@@ -104,6 +104,10 @@
       <Project>{42472427-4774-4C81-8AFF-9F27B8E31721}</Project>
       <Name>Perspex.Layout</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Perspex.Markup\Perspex.Markup.csproj">
+      <Project>{133046e5-8dd3-4ade-bfc4-da5a0d41e61d}</Project>
+      <Name>Perspex.Markup</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Perspex.SceneGraph\Perspex.SceneGraph.csproj">
       <Project>{EB582467-6ABB-43A1-B052-E981BA910E3A}</Project>
       <Name>Perspex.SceneGraph</Name>
